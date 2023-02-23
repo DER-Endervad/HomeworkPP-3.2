@@ -13,6 +13,26 @@ public:
 		arr = new int[size];
 	}
 
+	smart_array& operator=(/*const*/ smart_array& copyFrom) { // Здесь он просит вернуть mart_array&, а const мешает
+		delete[] arr;
+		this->size = copyFrom.size;
+		arr = new int[copyFrom.size];
+		this->queue = copyFrom.queue;
+		for (int i = 0; i < size; ++i) {
+			arr[i] = copyFrom.arr[i];
+		}
+		return copyFrom;
+	}
+
+	smart_array(const smart_array& copyFrom) {
+		this->size = copyFrom.size;
+		arr = new int[copyFrom.size];
+		this->queue = copyFrom.queue;
+		for (int i = 0; i < size; ++i) {
+			arr[i] = copyFrom.arr[i];
+		}
+	}
+
 	void add_element(int input) {
 		if (queue < size) {
 			arr[queue] = input;
@@ -24,7 +44,7 @@ public:
 	}
 
 	int get_element(int input) {
-		if (input >= 0 && input < size) {
+		if (input >= 0 && input < queue) {
 			return arr[input];
 		}
 		else {
@@ -32,18 +52,8 @@ public:
 		}
 	}
 
-	void copy_arr(const smart_array& array) {
-		delete[] arr;
-		this->size = array.size;
-		arr = new int[array.size];
-		this->queue = array.queue;
-		for (int i = 0; i < size; ++i) {
-			arr[i] = array.arr[i];
-		}
-	}
-
 	~smart_array() {
-		delete arr;
+		delete[] arr;
 	}
 };
 
@@ -64,7 +74,8 @@ int main()
 		new_array.add_element(34);
 		std::cout << "Второй массив, первое значение: " << new_array.get_element(1) << std::endl;
 
-		arr.copy_arr(new_array);
+		arr = new_array;
+		/*arr.copy_arr(new_array);*/
 		std::cout << "Первый массив, первое значение: " << arr.get_element(1) << std::endl;
 	}
 	catch (const std::exception& ex) {
