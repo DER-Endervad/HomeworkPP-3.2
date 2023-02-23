@@ -33,6 +33,7 @@ public:
 	}
 
 	void copy_arr(const smart_array& array) {
+		delete[] arr;
 		this->size = array.size;
 		arr = new int[array.size];
 		this->queue = array.queue;
