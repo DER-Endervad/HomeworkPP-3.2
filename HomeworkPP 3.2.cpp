@@ -13,15 +13,20 @@ public:
 		arr = new int[size];
 	}
 
-	smart_array& operator=(/*const*/ smart_array& copyFrom) { // Здесь он просит вернуть mart_array&, а const мешает
-		delete[] arr;
-		this->size = copyFrom.size;
-		arr = new int[copyFrom.size];
-		this->queue = copyFrom.queue;
-		for (int i = 0; i < size; ++i) {
-			arr[i] = copyFrom.arr[i];
+	smart_array& operator=(const smart_array& copyFrom) {
+		if (this != &copyFrom) {
+			delete[] arr;
+			this->size = copyFrom.size;
+			arr = new int[copyFrom.size];
+			this->queue = copyFrom.queue;
+			for (int i = 0; i < size; ++i) {
+				arr[i] = copyFrom.arr[i];
+			}
+			return *this;
 		}
-		return copyFrom;
+		else {
+			return *this;
+		}
 	}
 
 	smart_array(const smart_array& copyFrom) {
@@ -63,7 +68,7 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	try {
-		smart_array arr(5);
+		smart_array arr(5); // если тут написать код const smart_array arr(5); то функция add_element перестает работать.
 		arr.add_element(1);
 		arr.add_element(4);
 		arr.add_element(155);
@@ -75,7 +80,6 @@ int main()
 		std::cout << "Второй массив, первое значение: " << new_array.get_element(1) << std::endl;
 
 		arr = new_array;
-		/*arr.copy_arr(new_array);*/
 		std::cout << "Первый массив, первое значение: " << arr.get_element(1) << std::endl;
 	}
 	catch (const std::exception& ex) {
